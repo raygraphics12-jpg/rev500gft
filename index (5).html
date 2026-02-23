@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Exclusive Reward</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+}
+
+body{
+background:#f2f2f2;
+color:#111;
+}
+
+.wrapper{
+max-width:420px;
+margin:auto;
+padding:16px; 
+min-height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:flex-start;
+}
+
+.logo-img{
+width:65px; 
+height:65px;
+border-radius:50%;
+object-fit:cover;
+display:block;
+margin:0 auto 6px;
+}
+
+/* Logo */
+
+.logo{
+text-align:center;
+margin-bottom:10px; 
+}
+
+.logo-circle{
+width:65px;
+height:65px;
+border-radius:50%;
+background:#000;
+margin:0 auto 6px;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#fff;
+font-weight:700;
+font-size:24px;
+}
+
+.sublogo{
+letter-spacing:3px;
+font-size:12px;
+color:#888;
+}
+
+/* Progress */
+
+.progress-row{
+display:flex;
+justify-content:space-between;
+margin-top:10px; 
+font-size:14px;
+color:#777;
+}
+
+.progress-bar{
+height:8px; 
+background:#ddd;
+border-radius:10px;
+margin-top:8px;
+overflow:hidden;
+}
+
+.progress-fill{
+height:100%;
+width:0%;
+background:#111;
+border-radius:10px;
+transition:width .4s ease;
+}
+
+/* Headings */
+
+h1{
+font-size:24px; 
+margin:15px 0 10px; 
+line-height:1.25;
+}
+
+/* Options */
+
+.option{
+background:#eaeaea;
+border-radius:18px;
+padding:16px; 
+margin-bottom:14px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:16px; 
+cursor:pointer;
+border:2px solid transparent;
+}
+
+.option.active{
+border-color:#111;
+background:#fff;
+}
+
+.arrow{
+font-size:22px;
+opacity:.4;
+}
+
+/* Loader */
+
+.center{
+text-align:center;
+margin-top:60px; 
+}
+
+.loader{
+width:60px;
+height:60px;
+border-radius:50%;
+border:5px solid #ddd;
+border-top:5px solid #111;
+margin:0 auto 16px;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+to{transform:rotate(360deg);}
+}
+
+/* Eligible */
+
+.check{
+width:75px;
+height:75px;
+border-radius:50%;
+background:#dff5ec;
+display:flex;
+align-items:center;
+justify-content:center;
+margin:0 auto 16px;
+font-size:36px;
+color:#18a870;
+}
+
+.green{
+color:#18a870;
+}
+
+/* Card */
+
+.card{
+background:#e9e9e9;
+border-radius:16px;
+padding:16px; 
+margin:16px 0; 
+/* Magic tricks below: stretches the card and evenly spaces the steps */
+flex: 1; 
+display: flex;
+flex-direction: column;
+justify-content: space-evenly; 
+}
+
+.step{
+display:flex;
+gap:12px; 
+/* Removed bottom margin so flexbox natively handles the spacing */
+align-items: center;
+}
+
+.icon{
+width:40px; 
+height:40px;
+border-radius:50%;
+background:#fff;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:18px; 
+flex-shrink: 0;
+}
+
+.step-text {
+font-size: 15px; 
+}
+
+/* Button */
+
+.btn{
+background:#000;
+color:#fff;
+border:none;
+border-radius:30px;
+padding:16px; 
+font-size:18px; 
+width:100%;
+cursor:pointer;
+/* Fallback margin in case card content gets too long */
+margin-top:auto; 
+}
+
+/* Hide / Show Modifiers */
+
+.screen{
+display:none;
+}
+
+.show{
+display:flex;
+flex-direction: column;
+flex: 1; 
+}
+
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+<div class="logo">
+<img src="https://be.skrolin.com/images/revicon.png" class="logo-img">
+<div class="sublogo">EXCLUSIVE REWARD</div>
+</div>
+
+<div class="progress-row">
+<div>Progress</div>
+<div id="progressText">1/2</div>
+</div>
+
+<div class="progress-bar">
+<div class="progress-fill" id="progressFill"></div>
+</div>
+
+<div class="screen show" id="q1">
+
+<h1>What would you spend your reward on?</h1>
+
+<div class="option" onclick="next(1)">
+Clothes
+<span class="arrow">›</span>
+</div>
+
+<div class="option" onclick="next(1)">
+Vacation
+<span class="arrow">›</span>
+</div>
+
+<div class="option" onclick="next(1)">
+Family & Friends
+<span class="arrow">›</span>
+</div>
+
+<div class="option" onclick="next(1)">
+Other
+<span class="arrow">›</span>
+</div>
+
+</div>
+
+<div class="screen" id="q2">
+
+<h1>Are you 18 years of age or older?</h1>
+
+<div class="option" onclick="next(2)">
+Yes, I am
+<span class="arrow">›</span>
+</div>
+
+<div class="option" onclick="next(2)">
+No, I'm not
+<span class="arrow">›</span>
+</div>
+
+</div>
+
+<div class="screen center" id="loading">
+
+<div class="loader"></div>
+
+<h2 style="color:#777; font-size: 22px;">Checking your eligibility...</h2>
+<p style="color:#999; margin-top: 8px;">This will only take a moment</p>
+
+</div>
+
+<div class="screen center" id="eligible">
+
+<div class="check">✓</div>
+
+<h1 class="green">You're Eligible!</h1>
+
+<p style="color:#666;font-size:16px;">
+Great news — your Revolut £500 reward is reserved.
+</p>
+
+</div>
+
+<div class="screen" id="final">
+
+<h1>Almost There!</h1>
+<p style="color:#777;font-size:16px;margin-bottom:8px;">
+Follow these simple steps to claim your reward.
+</p>
+
+<div class="card">
+
+<div class="step">
+<div class="icon">✉️</div>
+<div class="step-text">
+<strong>Provide a valid email address</strong><br>
+<span style="color:#777; font-size: 14px;">For notifications and rewards</span>
+</div>
+</div>
+
+<div class="step">
+<div class="icon">💲</div>
+<div class="step-text">
+<strong>Complete 3-5 deals</strong><br>
+<span style="color:#777; font-size: 14px;">The more you do, the more you earn</span>
+</div>
+</div>
+
+<div class="step">
+<div class="icon">🎁</div>
+<div class="step-text">
+<strong>Claim Reward & Repeat</strong><br>
+<span style="color:#777; font-size: 14px;">Enjoy your reward</span>
+</div>
+</div>
+
+</div>
+
+<button class="btn" onclick="redirect()">
+Get Started →
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const fill = document.getElementById("progressFill");
+const text = document.getElementById("progressText");
+
+function next(step){
+
+if(step === 1){
+document.getElementById("q1").classList.remove("show");
+document.getElementById("q2").classList.add("show");
+
+fill.style.width = "50%";
+text.innerText = "2/2";
+}
+
+if(step === 2){
+
+document.getElementById("q2").classList.remove("show");
+document.getElementById("loading").classList.add("show");
+
+fill.style.width = "100%";
+text.innerText = "2/2";
+
+setTimeout(()=>{
+document.getElementById("loading").classList.remove("show");
+document.getElementById("eligible").classList.add("show");
+
+
+// ✅ AUTO LOAD FINAL PAGE AFTER APPROVAL
+setTimeout(showFinal,1500);
+
+
+},2000);
+
+}
+
+}
+
+function showFinal(){
+document.getElementById("eligible").classList.remove("show");
+document.getElementById("final").classList.add("show");
+}
+
+function redirect(){
+window.location.href = "https://t.afftrackr.com/?ge4=qNBc1joPQD6EvkgQYRQwyxa73snjjIhavQJDRoz7h5U%3d&s1=FormsTest";
+}
+
+</script>
+
+</body>
+</html>
